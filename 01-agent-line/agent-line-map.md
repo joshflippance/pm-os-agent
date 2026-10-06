@@ -10,26 +10,35 @@ List every discrete decision or action in your agent's workflow, then score each
 
 | Decision / action | Reversibility (H/M/L) | Blast radius (H/M/L) | Measurability (H/M/L) | Above / Below | HITL? |
 |---|---|---|---|---|---|
-| _Pull project state + recent GitHub/Jira activity_ | H | L | H | Below | · |
-| _Draft the weekly leadership status update_ | H | M | M | Below | spot-check |
-| _Propose next sprint's stories from the PRD (within cap)_ | M | M | M | Below | spot-check |
-| _Post the update to a channel / commit a ship date_ | L | H | M | Above | required |
-| _Mark a launch gate green / merge or close a ticket_ | L | H | M | Above | required |
-| _…_ | | | | | |
+| Pull project state + activity | H | L | H | Below | · |
+| Decide relevant context | M | M | L | Above | · |
+| Draft the update | H | M | M | Below | Yes |
+| Decide tone/commitment level | L | H | M | Above | · |
+| Flag at-risk/escalation | H | L | M | Below | Yes |
+| Choose what to escalate | M | H | L | Above | · |
+| Propose a story batch (capped) | H | M | M | Below | Yes |
+| Post an update / approve a company-wide one | L | H | M | Above | · |
 
 ## Agent anatomy (sketch)
 
-- **Model:** _your default fast model + when you escalate to a frontier model, and why_
-- **Tools:** _project + activity lookup (read) · past-update search · roadmap · team norms · story proposal (capped) …_
-- **Memory:** _what persists across runs (roadmap, decisions, norms) vs. purged_
+- **Model:** Default to a cheap, fast model for the mechanical steps (pulling data, flagging). Escalate to a frontier model for the judgment-heavy step, drafting the update, where framing and omissions matter.
+- **Tools:** Read-only lookups (project state, activity, past-update search, roadmap, team norms) plus a capped story proposal that goes to an approval queue. No post, merge or close tool exists, so above-the-line actions are out of Cortex's reach.
+- **Memory:** Persist stable reference material (roadmap, team norms, past approved updates, human decisions). Purge working data (each run's raw activity pull and drafts) after the run.
 - **Loop:** _placeholder, defined in M2 loop-spec.md_
 - **Bounds:** _placeholder, defined in M5 bounds-and-evals.md_
 - **Evals:** _placeholder, defined in M5 bounds-and-evals.md_
 
 ## The golden rule, applied
 
-_One sentence per above-the-line decision: why it stays human (which of reversibility / blast radius / measurability failed)._
+1. **Pull project state + activity** sits below the line because it's easy to reverse, has a small blast radius, and is easy to verify, deciding factor: blast radius.
+2. **Decide relevant context** sits above the line because it's moderately hard to reverse, has a moderate blast radius, and is hard to verify, deciding factor: measurability.
+3. **Draft the update** sits below the line, with a human approval checkpoint, because it's easy to reverse, has a moderate blast radius, and is moderately easy to verify, deciding factor: blast radius.
+4. **Decide tone/commitment level** sits above the line because it's hard to reverse, has a large blast radius, and is moderately easy to verify, deciding factor: reversibility.
+5. **Flag at-risk/escalation** sits below the line, with a human spot-check, because it's easy to reverse, has a small blast radius, and is moderately easy to verify, deciding factor: measurability.
+6. **Choose what to escalate** sits above the line because it's moderately hard to reverse, has a large blast radius, and is hard to verify, deciding factor: measurability.
+7. **Propose a story batch (capped)** sits below the line, with a human approval checkpoint, because it's easy to reverse, has a moderate blast radius, and is moderately easy to verify, deciding factor: blast radius.
+8. **Post an update / approve a company-wide one** sits above the line because it's hard to reverse, has a large blast radius, and is moderately easy to verify, deciding factor: reversibility.
 
 ## Hardest call
 
-_Your toughest "above vs below" decision and how you resolved it. (Share this in `#cohort-channel`.)_
+**Draft the update.** My first instinct was plain below the line, because a draft is just text and nothing leaves until a human posts it. But its blast radius is Medium: if the reviewer skims, wrong claims or framing go to leadership under the PM's name. Blast radius settled it, so Cortex still drafts, but a human approves before anything goes out (below + HITL).
